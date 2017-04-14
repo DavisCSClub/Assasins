@@ -1,154 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>DCSC Assassins!</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<style>
-		body{
-		text-align: center;
-		background: #00ECB9;
-		font-family: sans-serif;
-		font-weight: 100;
+
+<head>
+	<title>DCSC Assassins!</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<style>
+		body {
+			text-align: center;
+			background: #114;
+			font-family: sans-serif;
+			font-weight: 100;
+			color: white;
 		}
-		h1{
-		color: #396;
-		font-weight: 100;
-		font-size: 40px;
-		margin: 40px 0px 20px;
+
+		h1 {
+			font-weight: 100;
+			font-size: 40px;
+			margin: 40px 0px 20px;
 		}
-		#clockdiv{
-		font-family: sans-serif;
-		color: #fff;
-		display: inline-block;
-		font-weight: 100;
-		text-align: center;
-		font-size: 30px;
+
+		#clockdiv {
+			font-family: sans-serif;
+			color: #fff;
+			display: inline-block;
+			font-weight: 100;
+			text-align: center;
+			font-size: 30px;
 		}
-		#clockdiv > div{
-		padding: 10px;
-		border-radius: 3px;
-		background: #00BF96;
-		display: inline-block;
+
+		#clockdiv>div {
+			padding: 10px;
+			border-radius: 3px;
+			background: #FFB523;
+			display: inline-block;
 		}
-		#clockdiv div > span{
-		padding: 15px;
-		border-radius: 3px;
-		background: #00816A;
-		display: inline-block;
+
+		#clockdiv div>span {
+			padding: 15px;
+			border-radius: 3px;
+			background: #D18800;
+			display: inline-block;
 		}
-		.smalltext{
-		padding-top: 5px;
-		font-size: 16px;
+
+		.smalltext {
+			padding-top: 5px;
+			font-size: 16px;
 		}
-		</style>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<script src="countdown.min.js"></script>
-		<script
-		src="https://code.jquery.com/jquery-3.2.1.min.js"
-		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-		crossorigin="anonymous"></script>
-		<script
-		src="google-spreadsheet.js"></script>
-		<script src="bootstrap-table.min.js"></script>
-	</head>
-	<body>
-		<h1 ><font color="#6B96C6">DCSC Presents: <b>Assassins</b></font></h1>
-		<h2><font color="#6B96C6">Time Remaining:</font></h2>
-		<div id="clockdiv">
-			<div>
-				<span class="days"></span>
-				<div class="smalltext">Days</div>
-			</div>
-			<div>
-				<span class="hours"></span>
-				<div class="smalltext">Hours</div>
-			</div>
-			<div>
-				<span class="minutes"></span>
-				<div class="smalltext">Minutes</div>
-			</div>
-			<div>
-				<span class="seconds"></span>
-				<div class="smalltext">Seconds</div>
-			</div>
-			<table id="mytable" class="table">
-				<thead>
-					<tr>
-						<th data-field="id" class="text-center" >Name</th>
-						<th data-field="stat" class="text-center" >Status</th>
-					</tr>
-				</thead>
-				<tbody id="loadme">
-				</tbody>
-			</table>
+
+		#mytable {
+			font-size: 24px;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="countdown.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	<script src="google-spreadsheet.js"></script>
+	<script src="bootstrap-table.min.js"></script>
+</head>
+
+<body>
+	<h1>DCSC Presents: <b>Assassins</b></h1>
+	<h2>Time Remaining:</h2>
+	<div id="clockdiv">
+		<div>
+			<span class="days"></span>
+			<div class="smalltext">Days</div>
 		</div>
-	</body>
-	<script>
+		<div>
+			<span class="hours"></span>
+			<div class="smalltext">Hours</div>
+		</div>
+		<div>
+			<span class="minutes"></span>
+			<div class="smalltext">Minutes</div>
+		</div>
+		<div>
+			<span class="seconds"></span>
+			<div class="smalltext">Seconds</div>
+		</div>
+		<table id="mytable" class="table">
+			<thead>
+				<tr>
+					<th data-field="id" class="text-center">Name</th>
+					<th data-field="stat" class="text-center">Status</th>
+				</tr>
+			</thead>
+			<tbody id="loadme">
+			</tbody>
+		</table>
+	</div>
+</body>
+<script>
 	var url = "https://spreadsheets.google.com/feeds/list/1hYBuiKBoQ10e9SvzL_mZQcwh0NBvPb21BvKHqkmMXBI/oneurwf/public/values?alt=json";
 	$.getJSON(url, function(data) {
-	var entry = data.feed.entry;
-	var dead = [];
-	var alive = [];
-	$(entry).each(function(){
-	var name = this.gsx$name["$t"];
-	var status = this.gsx$status["$t"];
-	console.log(status)
-	if (status == "") {
-		alive.push({"id": name, "stat" : "ALIVE"});
-	} else {
-		dead.push({"id": name, "stat" : "DEAD"});
-	}
-	
-	});
-	
-	alive = alive.concat(dead);
-	for (var i = 0; i < alive.length; i += 1) {
-		$('#loadme').append(
-		'<tr>' +
-		'<td>' + alive[i].id + '</td>' +
-		'<td>' + alive[i].stat + '</td>' +
-		'</tr>');
+		var entry = data.feed.entry;
+		var dead = [];
+		var alive = [];
+		$(entry).each(function() {
+			var name = this.gsx$name["$t"];
+			var status = this.gsx$status["$t"];
+			console.log(status)
+			if (status == "") {
+				alive.push({
+					"id": name,
+					"stat": "ALIVE"
+				});
+			} else {
+				dead.push({
+					"id": name,
+					"stat": "DEAD"
+				});
+			}
+
+		});
+
+		alive = alive.concat(dead);
+		for (var i = 0; i < alive.length; i += 1) {
+			$('#loadme').append(
+				'<tr>' +
+				'<td>' + alive[i].id + '</td>' +
+				'<td>' + alive[i].stat + '</td>' +
+				'</tr>');
 		}
 		console.log(dead);
-		});
-		function getTimeRemaining(endtime) {
+	});
+
+	function getTimeRemaining(endtime) {
 		var t = Date.parse(endtime) - Date.parse(new Date());
 		var seconds = Math.floor((t / 1000) % 60);
 		var minutes = Math.floor((t / 1000 / 60) % 60);
 		var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
 		var days = Math.floor(t / (1000 * 60 * 60 * 24));
 		return {
-		'total': t,
-		'days': days,
-		'hours': hours,
-		'minutes': minutes,
-		'seconds': seconds
+			'total': t,
+			'days': days,
+			'hours': hours,
+			'minutes': minutes,
+			'seconds': seconds
 		};
-		}
-		function initializeClock(id, endtime) {
+	}
+
+	function initializeClock(id, endtime) {
 		var clock = document.getElementById(id);
 		var daysSpan = clock.querySelector('.days');
 		var hoursSpan = clock.querySelector('.hours');
 		var minutesSpan = clock.querySelector('.minutes');
 		var secondsSpan = clock.querySelector('.seconds');
+
 		function updateClock() {
-		var t = getTimeRemaining(endtime);
-		daysSpan.innerHTML = t.days;
-		hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-		minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-		secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-		if (t.total <= 0) {
-		clearInterval(timeinterval);
-		}
+			var t = getTimeRemaining(endtime);
+			daysSpan.innerHTML = t.days;
+			hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+			minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+			secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+			if (t.total <= 0) {
+				clearInterval(timeinterval);
+			}
 		}
 		updateClock();
 		var timeinterval = setInterval(updateClock, 1000);
-		}
-		var deadline = new Date(1493837940 * 1000);
-		initializeClock('clockdiv', deadline);
-		
-		</script>
-	</html>
+	}
+	var deadline = new Date(1493837940 * 1000);
+	initializeClock('clockdiv', deadline);
+</script>
+
+</html>
